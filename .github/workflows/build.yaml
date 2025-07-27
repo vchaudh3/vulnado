@@ -7,6 +7,34 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  analyze:
+    name: Analyze Code with CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]  # Change to 'javascript', 'python', etc. as needed
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild project
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
