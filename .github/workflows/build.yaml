@@ -7,6 +7,35 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  owasp-dependency-check:
+    name: OWASP Dependency Check (SCA)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: "vulnado"
+          format: "HTML,JSON"
+          outputDirectory: "reports"
+          failOnCVSS: 7  # fail build if CVSS >= 7
+          scanPath: "."
+
+      - name: Upload Dependency-Check Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports
+          
   analyze:
     name: Analyze Code with CodeQL
     runs-on: ubuntu-latest
