@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM User in Contractors Group with EC2, S3, and EKS Access
+
+Resources:
+
+  ContractorsGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: Contractors
+
+  ContractorsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: ContractorsAccessPolicy
+      Description: Limited access to EC2, S3, and EKS
+      Groups:
+        - !Ref ContractorsGroup
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:Describe*
+              - s3:List*
+              - s3:Get*
+              - eks:Describe*
+            Resource: "*"
+
+  IAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: contractor-user
+      Groups:
+        - !Ref ContractorsGroup
