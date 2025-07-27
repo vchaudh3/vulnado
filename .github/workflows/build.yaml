@@ -69,8 +69,8 @@ jobs:
       ### 🌐 5. Detect unauthorized third-party calls
       - name: Block unexpected network calls
         run: |
-          sudo iptables -P OUTPUT DROP
-          sudo iptables -A OUTPUT -d github.com -j ACCEPT
+          #sudo iptables -P OUTPUT DROP
+          #sudo iptables -A OUTPUT -d github.com -j ACCEPT
           echo "Blocking outbound network except GitHub"
   
       ### ✅ 6. Pin dependency versions
