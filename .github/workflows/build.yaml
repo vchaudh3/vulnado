@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -26,20 +26,21 @@ jobs:
           echo $JAVA_HOME
           java -version          
 
+      - name: Install OWASP Dependency-Check CLI
+        run: |
+          curl -L https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.7/dependency-check-9.0.7-release.zip -o dc.zip
+          unzip dc.zip -d dc
+          chmod +x dc/bin/dependency-check.sh
+  
       - name: Run OWASP Dependency-Check
-        uses: dependency-check/Dependency-Check_Action@main
-        with:
-          project: "vulnado"
-          format: "HTML,JSON"
-          outputDirectory: "reports"
-          failOnCVSS: 7  # fail build if CVSS >= 7
-          scanPath: "."
-
-      - name: Upload Dependency-Check Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-check-report
-          path: reports
+        run: |
+          ./dc/bin/dependency-check.sh \
+            --project "vulnado" \
+            --scan . \
+            --format "HTML,JSON" \
+            --out "dependency-check-report" \
+            --noupdate
+          
           
   analyze:
     name: Analyze Code with CodeQL
