@@ -18,7 +18,7 @@ on:
 jobs:
   build-java-app:
     runs-on: ubuntu-latest
-	name: Assignment 1-3:Build, Test, Sonar Scan, Docker Push
+    name: Assignment 1-3:Build, Test, Sonar Scan, Docker Push
 
     steps:
       - name: Checkout code

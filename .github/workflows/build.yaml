@@ -11,7 +11,7 @@ on:
   
 jobs:
   call-reusable:
-    uses: ./.github/workflows/reusable/reusable-java-ci.yml
+    uses: ./.github/workflows/reusable-java-ci.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
