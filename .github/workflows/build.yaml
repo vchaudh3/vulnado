@@ -39,7 +39,14 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vchaudh3_sonar-2607-2127
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vchaudh3_sonar-2607-2127 | tee sonar_output.log
+
+      - name: Upload Sonar Report Log as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sonar-scan-log
+          path: sonar_output.log
+          
 
       - name: Assignment-3:Log in to DockerHub
         uses: docker/login-action@v2
