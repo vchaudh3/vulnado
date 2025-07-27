@@ -50,7 +50,7 @@ jobs:
 
       ### 📦 3. Dependency Chain Abuse Protection
       - name: Dependency Review (GitHub native)
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v4.7.1
         with:
           fail-on-severity: critical
           comment-summary-in-pr: true
