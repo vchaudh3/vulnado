@@ -54,6 +54,8 @@ jobs:
         with:
           fail-on-severity: critical
           comment-summary-in-pr: true
+          base-ref: ${{ github.event.before }}
+          head-ref: ${{ github.event.after }}
   
       - name: OWASP Dependency-Check (SCA)
         uses: dependency-check/Dependency-Check_Action@1.1.0
