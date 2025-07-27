@@ -7,6 +7,10 @@ on:
         required: false
         type: string
         default: '17'
+      distribution:
+        required: false
+        type: string
+        default: 'temurin'
     secrets:
       SONAR_TOKEN:
         required: true
@@ -28,6 +32,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.java-version }}
+          distribution: ${{ inputs.distribution }}
 
       - name: Assignment-1:Build with Maven
         run: mvn clean package --no-transfer-progress
