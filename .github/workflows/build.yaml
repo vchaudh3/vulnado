@@ -43,6 +43,44 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Verify deployment manifest SHA256
+        run: |
+          echo "known-good-hash  deployment.yaml" > deployment.yaml.sha256
+          sha256sum -c deployment.yaml.sha256
+
+      ### 📦 3. Dependency Chain Abuse Protection
+      - name: Dependency Review (GitHub native)
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+          comment-summary-in-pr: true
+  
+      - name: OWASP Dependency-Check (SCA)
+        uses: dependency-check/Dependency-Check_Action@v3.0.0
+        with:
+          project: "vulnado"
+          scanPath: "./"
+          format: "HTML"
+          outputDirectory: "reports"
+        
+      ### 🌐 5. Detect unauthorized third-party calls
+      - name: Block unexpected network calls
+        run: |
+          sudo iptables -P OUTPUT DROP
+          sudo iptables -A OUTPUT -d github.com -j ACCEPT
+          echo "Blocking outbound network except GitHub"
+  
+      ### ✅ 6. Pin dependency versions
+      - name: Ensure dependencies are pinned
+        run: |
+          grep -E 'version|commit' pom.xml || (echo "Dependencies not pinned!" && exit 1)
+  
+      ### 🧾 7. SBOM Generation for auditing
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          output-file: sbom.spdx.json
+        
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
