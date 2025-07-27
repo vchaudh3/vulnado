@@ -61,7 +61,8 @@ jobs:
         uses: dependency-check/Dependency-Check_Action@1.1.0
         with:
           project: "vulnado"
-          scanPath: "./"
+          #scanPath: "./"
+          path: '.'
           format: "HTML"
           outputDirectory: "reports"
         
