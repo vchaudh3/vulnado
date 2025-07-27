@@ -56,7 +56,7 @@ jobs:
           comment-summary-in-pr: true
   
       - name: OWASP Dependency-Check (SCA)
-        uses: dependency-check/Dependency-Check_Action@v3.0.0
+        uses: dependency-check/Dependency-Check_Action@v1.1.0
         with:
           project: "vulnado"
           scanPath: "./"
