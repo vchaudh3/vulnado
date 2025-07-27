@@ -42,7 +42,7 @@ jobs:
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vchaudh3_sonar-2607-2127 | tee sonar_output.log
 
       - name: Upload Sonar Report Log as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sonar-scan-log
           path: sonar_output.log
